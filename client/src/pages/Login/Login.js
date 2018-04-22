@@ -2,24 +2,20 @@ import React from 'react';
 import { Input, FormBtn } from '../../components/Form';
 import API from '../../utils/API';
 
-class SignUp extends React.Component {
+class Login extends React.Component {
   state = {
     email: '',
-    firstName: '',
-    lastName: '',
     password: ''
   };
 
-  signupSubmit = event => {
+  loginSubmit = event => {
     event.preventDefault();
-    API.signUp({
-      firstName: this.state.firstName,
-      lastname: this.state.lastName,
+    API.login({
       email: this.state.email,
       password: this.state.password
     })
       .then(res =>
-        this.setState({ firstName: '', lastName: '', email: '', password: '' })
+        this.setState({ email: '', password: '' })
       )
       .catch(err => console.log(err));
   };
@@ -36,20 +32,8 @@ class SignUp extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-          <h1>Signup</h1>
+          <h1>Login</h1>
             <form>
-              <Input
-                value={this.state.firstName}
-                onChange={this.handleInputChange}
-                name="firstName"
-                placeholder="First Name"
-              />
-              <Input
-                value={this.state.lastName}
-                onChange={this.handleInputChange}
-                name="lastName"
-                placeholder="Last Name"
-              />
               <Input
                 value={this.state.email}
                 onChange={this.handleInputChange}
@@ -63,7 +47,7 @@ class SignUp extends React.Component {
                 placeholder="Password"
                 type="password"
               />
-              <FormBtn onClick={this.signupSubmit}>Submit</FormBtn>
+              <FormBtn onClick={this.loginSubmit}>Submit</FormBtn>
             </form>
           </div>
         </div>
@@ -72,4 +56,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default Login;

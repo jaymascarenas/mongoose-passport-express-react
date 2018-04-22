@@ -12,7 +12,11 @@ const userSchema = new mongoose.Schema({
   lastName: String
 });
 
-userSchema.plugin(passportLocalMongoose);
+const options = {
+  usernameField: 'email'
+};
+
+userSchema.plugin(passportLocalMongoose, options);
 
 const User = mongoose.model('User', userSchema);
 
