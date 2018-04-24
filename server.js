@@ -1,54 +1,43 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const routes = require('./routes');
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
 
-const cookieParser = require('cookie-parser');
-const session = require('cookie-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+var book = require('./routes/book');
+var auth = require('./routes/auth');
+var app = express();
 
-const app = express();
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://localhost/mern-secure', { promiseLibrary: require('bluebird') })
+  .then(() =>  console.log('connection successful'))
+  .catch((err) => console.error(err));
 
-const PORT = process.env.PORT || 3001;
-
-// Configure body parser for AJAX requests
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(session({ keys: ['secretkey1', 'secretkey2', '...'] }));
+app.use(bodyParser.urlencoded({'extended':'false'}));
+app.use(express.static(path.join(__dirname, 'build')));
 
-// Configure passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+app.use('/api/book', book);
+app.use('/api/auth', auth);
 
-// Configure passport-local to use account model for authentication
-const User = require('./models/user');
-passport.use(new LocalStrategy(User.authenticate()));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-// Serve up static assets
-app.use(express.static('client/build'));
-// Add routes, both API and view
-app.use(routes);
-
-// Connect to the Mongo DB
-mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/mongoose-passport'
-),
-  function(err) {
-    if (err) {
-      console.log(
-        'Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!'
-      );
-    }
-  };
-
-// Start the API server
-
-console.log('THIS IS RUNNING ON PORT: ' + PORT);
-app.listen(PORT, function() {
-  console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
