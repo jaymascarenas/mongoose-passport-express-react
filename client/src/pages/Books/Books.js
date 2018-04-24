@@ -15,7 +15,6 @@ class Books extends Component {
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 
-
     API.getBooks()
       .then(res => {
         this.setState({ books: res.data });
