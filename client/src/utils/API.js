@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
   // Gets all books
   getBooks: function() {
-    return axios.get("/api/books");
+    return axios.get("/api/book");
   },
   // Gets the book with the given id
   login: function(username, password) {

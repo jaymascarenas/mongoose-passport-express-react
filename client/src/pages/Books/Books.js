@@ -56,7 +56,7 @@ class Books extends Component {
               </thead>
               <tbody>
                 {this.state.books.map(book =>
-                  <tr>
+                  <tr key={book._id}>
                     <td><Link to={`/show/${book._id}`}>{book.isbn}</Link></td>
                     <td>{book.title}</td>
                     <td>{book.author}</td>
