@@ -9,11 +9,11 @@ import Register from './components/Register';
 
 const App = () => (
   <Router>
-      <div>
-        <Route exact path='/' component={Books} />
-        <Route path='/login' component={Login} />
-        <Route path='/register' component={Register} />
-      </div>
+    <div>
+      <Route exact path="/" component={Books} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+    </div>
   </Router>
 );
 registerServiceWorker();

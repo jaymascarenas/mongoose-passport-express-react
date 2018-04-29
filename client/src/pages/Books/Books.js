@@ -4,7 +4,6 @@ import axios from 'axios';
 import API from '../../utils/API';
 
 class Books extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -13,16 +12,18 @@ class Books extends Component {
   }
 
   componentDidMount() {
-    axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+    axios.defaults.headers.common['Authorization'] = localStorage.getItem(
+      'jwtToken'
+    );
 
     API.getBooks()
       .then(res => {
         this.setState({ books: res.data });
         console.log(this.state.books);
       })
-      .catch((error) => {
-        if(error.response.status === 401) {
-          this.props.history.push("/login");
+      .catch(error => {
+        if (error.response.status === 401) {
+          this.props.history.push('/login');
         }
       });
   }
@@ -30,7 +31,7 @@ class Books extends Component {
   logout = () => {
     localStorage.removeItem('jwtToken');
     window.location.reload();
-  }
+  };
 
   render() {
     return (
@@ -39,9 +40,11 @@ class Books extends Component {
           <div className="panel-heading">
             <h3 className="panel-title">
               BOOK CATALOG &nbsp;
-              {localStorage.getItem('jwtToken') &&
-                <button className="btn btn-primary" onClick={this.logout}>Logout</button>
-              }
+              {localStorage.getItem('jwtToken') && (
+                <button className="btn btn-primary" onClick={this.logout}>
+                  Logout
+                </button>
+              )}
             </h3>
           </div>
           <div className="panel-body">
@@ -54,13 +57,15 @@ class Books extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.books.map(book =>
+                {this.state.books.map(book => (
                   <tr key={book._id}>
-                    <td><Link to={`/show/${book._id}`}>{book.isbn}</Link></td>
+                    <td>
+                      <Link to={`/show/${book._id}`}>{book.isbn}</Link>
+                    </td>
                     <td>{book.title}</td>
                     <td>{book.author}</td>
                   </tr>
-                )}
+                ))}
               </tbody>
             </table>
           </div>

@@ -4,12 +4,13 @@
   "description": "Mern Demo",
   "main": "server.js",
   "scripts": {
-    "server": "node ./bin/www",
-    "client": "cd client && npm run start",
+    "server": "node server.js",
+    "client": "node scripts/start-client.js",
     "start": "./node_modules/.bin/concurrently \"npm run server\" \"npm run client\"",
-    "build": "cd client && npm run build",
+    "build": "node scripts/build.js",
     "deploy": "yarn build && git add . && git commit -m \"Building for production\" && git push heroku master",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "installDeps": "yarn && cd client && yarn"
   },
   "author": "",
   "license": "ISC",
